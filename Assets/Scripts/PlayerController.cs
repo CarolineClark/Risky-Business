@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour {
 	private float yaw = 0.0f;
 	private float pitch = 0.0f;
 	private CursorLockMode cursorLockMode = CursorLockMode.Locked;
-	private KeyCode crouchKey = KeyCode.Tab;
 	private bool isCrouching = false;
 	private Transform spawnPoint;
 	private bool onSqueakyFloorboard = false;
@@ -23,7 +22,7 @@ public class PlayerController : MonoBehaviour {
 	private float quietSqueakVelocity = 1f;
 	private float loudSqueakVelocity = 1.5f;
 
-	void Start () {
+	void Start() {
 		spawnPoint = GameObject.FindGameObjectWithTag(Constants.PLAYER_SPAWN_POINT_TAG).transform;
 		characterController = GetComponent<CharacterController>();
 		EventManager.StartListening(Constants.RESTART_GAME_EVENT, SetPlayerPositionToSpawnPoint);
@@ -41,30 +40,30 @@ public class PlayerController : MonoBehaviour {
 	public void SetIsOnSqueakyFloorboard(bool onSqueaky) {
 		onSqueakyFloorboard = onSqueaky;
 	}
-	
-	void Update () {
+
+	void Update() {
 		RotatePlayer();
 		MovePlayer();
 		LockMouse();
 		CheckForSqueaks();
-	 }
+	}
 
 	void RotatePlayer() {
 		if (cursorLockMode == CursorLockMode.Locked) {
 			yaw += speedH * Input.GetAxis("Mouse X");
 			pitch -= speedV * Input.GetAxis("Mouse Y");
 			transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
-		} 
-  }
+		}
+	}
 
 	void MovePlayer() {
 		if (characterController.isGrounded) {
-	  		moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+			moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 			moveDirection = transform.TransformDirection(moveDirection);
 			moveDirection *= speed;
 
 			if (Input.GetButton("Jump") && !isCrouching) {
-				moveDirection.y = jumpSpeed;    
+				moveDirection.y = jumpSpeed;
 			}
 
 			CrouchPlayer();
@@ -78,18 +77,23 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void CrouchPlayer() {
-		if (Input.GetKeyDown(crouchKey)) {
-			if (isCrouching) {
-				transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 2f, transform.localScale.z);
-			} else {
+		if (Input.GetButton("Crouch")) {
+			if (!isCrouching) {
+				isCrouching = true;
 				transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 0.5f, transform.localScale.z);
 				transform.position -= new Vector3(0, transform.position.y * 0.5f, 0);
 			}
-			isCrouching = !isCrouching;
+		}
+		else
+		{
+			if (isCrouching) {
+				isCrouching = false;
+				transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 2f, transform.localScale.z);
+			}
 		}
 	}
 
-	void LockMouse() {
+  void LockMouse() {
 		if (Input.GetMouseButtonDown(0)) {
 			cursorLockMode = CursorLockMode.Locked;
 			SetCursorState();
