@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Start () {
 		characterController = GetComponent<CharacterController>();
+		EventManager.StartListening(Constants.RESTART_GAME_EVENT, ResetPlayerPosition);
 	}
 	
 	void Update () {
@@ -85,5 +86,9 @@ public class PlayerController : MonoBehaviour {
 	void SetCursorState() {
 		Cursor.lockState = cursorLockMode;
 		Cursor.visible = (CursorLockMode.Locked != cursorLockMode);
+	}
+
+	void ResetPlayerPosition(Hashtable h) {
+		Debug.Log("TODO - Reset player position");
 	}
 }
