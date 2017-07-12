@@ -36,12 +36,12 @@ public class PlayerController : MonoBehaviour {
 			yaw += speedH * Input.GetAxis("Mouse X");
 			pitch -= speedV * Input.GetAxis("Mouse Y");
 			transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
-		}
-	}
+		} 
+  }
 
 	void MovePlayer() {
 		if (characterController.isGrounded) {
-			moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+      moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 			moveDirection = transform.TransformDirection(moveDirection);
 			moveDirection *= speed;
 
