@@ -14,7 +14,13 @@ public class SqueakyFloorboardTrigger : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == Constants.PLAYER_TAG) {
-			
+			other.GetComponent<PlayerController>().SetIsOnSqueakyFloorboard(true);
+		}
+	}
+
+	void OnTriggerExit(Collider other) {
+		if (other.tag == Constants.PLAYER_TAG) {
+			other.GetComponent<PlayerController>().SetIsOnSqueakyFloorboard(false);
 		}
 	}
 }

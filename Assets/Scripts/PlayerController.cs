@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
 	private KeyCode crouchKey = KeyCode.Tab;
 	private bool isCrouching = false;
 	private Transform spawnPoint;
+	private bool onSqueakyFloorboard = false;
 
 	// Make these public once doing level design
 	private float speedH = 2.0f;
@@ -19,6 +20,8 @@ public class PlayerController : MonoBehaviour {
 	private float crouchSpeedFactor = 0.5f;
 	private float jumpSpeed = 3.5F;
 	private float gravity = 9.8F;
+	private float quietSqueakVelocity = 1f;
+	private float loudSqueakVelocity = 1.5f;
 
 	void Start () {
 		spawnPoint = GameObject.FindGameObjectWithTag(Constants.PLAYER_SPAWN_POINT_TAG).transform;
@@ -34,11 +37,16 @@ public class PlayerController : MonoBehaviour {
 	void SetPlayerPositionToSpawnPoint(Hashtable h) {
 		SetPlayerPositionToSpawnPoint();
 	}
+
+	public void SetIsOnSqueakyFloorboard(bool onSqueaky) {
+		onSqueakyFloorboard = onSqueaky;
+	}
 	
 	void Update () {
 		RotatePlayer();
 		MovePlayer();
 		LockMouse();
+		CheckForSqueaks();
 	 }
 
 	void RotatePlayer() {
@@ -51,7 +59,7 @@ public class PlayerController : MonoBehaviour {
 
 	void MovePlayer() {
 		if (characterController.isGrounded) {
-      moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+	  		moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 			moveDirection = transform.TransformDirection(moveDirection);
 			moveDirection *= speed;
 
@@ -95,5 +103,16 @@ public class PlayerController : MonoBehaviour {
 	void SetCursorState() {
 		Cursor.lockState = cursorLockMode;
 		Cursor.visible = (CursorLockMode.Locked != cursorLockMode);
+	}
+
+	void CheckForSqueaks() {
+		if (onSqueakyFloorboard) {
+			if (characterController.velocity.magnitude > loudSqueakVelocity) {
+				Debug.Log("loud squeak");
+			}
+			else if (characterController.velocity.magnitude > quietSqueakVelocity) {
+				Debug.Log("quiet squeak");
+			}
+		}
 	}
 }
