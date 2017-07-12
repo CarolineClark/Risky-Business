@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour {
 	private CursorLockMode cursorLockMode;
 	private KeyCode crouchKey = KeyCode.Tab;
 	private bool isCrouching = false;
+	private Transform spawnPoint;
 
 	// Make these public once doing level design
 	private float speedH = 2.0f;
@@ -20,8 +21,10 @@ public class PlayerController : MonoBehaviour {
 	private float gravity = 9.8F;
 
 	void Start () {
+		spawnPoint = GameObject.FindGameObjectWithTag(Constants.PLAYER_SPAWN_POINT_TAG).transform;
 		characterController = GetComponent<CharacterController>();
 		EventManager.StartListening(Constants.RESTART_GAME_EVENT, ResetPlayerPosition);
+		SetPlayerPositionToSpawnPoint();
 	}
 	
 	void Update () {
@@ -36,6 +39,10 @@ public class PlayerController : MonoBehaviour {
 			pitch -= speedV * Input.GetAxis("Mouse Y");
 			transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
 		}
+	}
+
+	void SetPlayerPositionToSpawnPoint() {
+		transform.position = spawnPoint.position;
 	}
 
 	void MovePlayer() {
