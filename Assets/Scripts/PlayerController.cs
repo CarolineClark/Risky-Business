@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour {
 	private float yaw = 0.0f;
 	private float pitch = 0.0f;
 	private CursorLockMode cursorLockMode;
-	private Transform transform;
 	private KeyCode crouchKey = KeyCode.Tab;
 	private bool isCrouching = false;
 
@@ -22,7 +21,6 @@ public class PlayerController : MonoBehaviour {
 
 	void Start () {
 		characterController = GetComponent<CharacterController>();
-		transform = GetComponent<Transform>();
 	}
 	
 	void Update () {
