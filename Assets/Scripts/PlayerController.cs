@@ -9,11 +9,14 @@ public class PlayerController : MonoBehaviour {
 	private float pitch = 0.0f;
 	private CursorLockMode cursorLockMode;
 	private Transform transform;
+	private KeyCode crouchKey = KeyCode.Tab;
+	private bool isCrouching = false;
 
 	// Make these public once doing level design
 	private float speedH = 2.0f;
 	private float speedV = 2.0f;
 	private float speed = 2f;
+	private float crouchSpeedFactor = 0.5f;
 	private float jumpSpeed = 3.5F;
 	private float gravity = 9.8F;
 
@@ -25,7 +28,6 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 		RotatePlayer();
 		MovePlayer();
-		DuckPlayer();
 		LockMouse();
 	 }
 
@@ -42,16 +44,32 @@ public class PlayerController : MonoBehaviour {
 			moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 			moveDirection = transform.TransformDirection(moveDirection);
 			moveDirection *= speed;
-			if (Input.GetButton("Jump"))
+
+			if (Input.GetButton("Jump") && !isCrouching) {
 				moveDirection.y = jumpSpeed;    
+			}
+
+			CrouchPlayer();
+
+			if (isCrouching) {
+				moveDirection *= crouchSpeedFactor;
+			}
 		}
+		
+		
 		moveDirection.y -= gravity * Time.deltaTime;
 		characterController.Move(moveDirection * Time.deltaTime);
 	}
 
-	void DuckPlayer() {
-		if (Input.GetKeyDown(KeyCode.DownArrow)) {
-			transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 0.5f, transform.localScale.z);
+	void CrouchPlayer() {
+		if (Input.GetKeyDown(crouchKey)) {
+			if (isCrouching) {
+				transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 2f, transform.localScale.z);
+			} else {
+				transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 0.5f, transform.localScale.z);
+				transform.position -= new Vector3(0, transform.position.y * 0.5f, 0);
+			}
+			isCrouching = !isCrouching;
 		}
 	}
 
