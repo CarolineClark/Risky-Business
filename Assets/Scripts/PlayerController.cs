@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour {
 		RotatePlayer();
 		LockMouse();
 		MovePlayer();
+		DuckPlayer();
  	}
 
 	 void RotatePlayer() {
@@ -44,6 +45,12 @@ public class PlayerController : MonoBehaviour {
         }
 		moveDirection.y -= gravity * Time.deltaTime;
         characterController.Move(moveDirection * Time.deltaTime);
+	}
+
+	void DuckPlayer() {
+		if (Input.GetKeyDown(KeyCode.DownArrow)) {
+			// TODO
+		}
 	}
 
 	void LockMouse() {
