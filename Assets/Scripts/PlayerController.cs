@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
 	private Vector3 moveDirection = Vector3.zero;
 	private float yaw = 0.0f;
 	private float pitch = 0.0f;
-	private CursorLockMode wantedMode;
+	private CursorLockMode cursorLockMode;
 
 	// Make these public once doing level design
 	private float speedH = 2.0f;
@@ -22,13 +22,13 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update () {
 		RotatePlayer();
-		LockMouse();
 		MovePlayer();
 		DuckPlayer();
+		LockMouse();
 	 }
 
 	void RotatePlayer() {
-		if (wantedMode == CursorLockMode.Locked) {
+		if (cursorLockMode == CursorLockMode.Locked) {
 			yaw += speedH * Input.GetAxis("Mouse X");
 			pitch -= speedV * Input.GetAxis("Mouse Y");
 			transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
@@ -55,17 +55,17 @@ public class PlayerController : MonoBehaviour {
 
 	void LockMouse() {
 		if (Input.GetMouseButtonDown(0)) {
-			wantedMode = CursorLockMode.Locked;
+			cursorLockMode = CursorLockMode.Locked;
 			SetCursorState();
 		}
 		if (Input.GetKeyDown(KeyCode.Escape)) {
-			Cursor.lockState = wantedMode = CursorLockMode.None;
+			Cursor.lockState = cursorLockMode = CursorLockMode.None;
 			SetCursorState();
 		}
 	}
 
 	void SetCursorState() {
-		Cursor.lockState = wantedMode;
-		Cursor.visible = (CursorLockMode.Locked != wantedMode);
+		Cursor.lockState = cursorLockMode;
+		Cursor.visible = (CursorLockMode.Locked != cursorLockMode);
 	}
 }
