@@ -14,6 +14,7 @@ public class NoiseBar : MonoBehaviour {
 		image.type = Image.Type.Filled;
 		image.fillMethod = Image.FillMethod.Vertical;
 		image.fillOrigin = (int)Image.OriginVertical.Bottom;
+		image.fillAmount = 0;
 	}
 	
 	void Update () {
