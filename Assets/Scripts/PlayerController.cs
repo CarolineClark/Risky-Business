@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
 	private Vector3 moveDirection = Vector3.zero;
 	private float yaw = 0.0f;
 	private float pitch = 0.0f;
-	private CursorLockMode cursorLockMode;
+	private CursorLockMode cursorLockMode = CursorLockMode.Locked;
 	private KeyCode crouchKey = KeyCode.Tab;
 	private bool isCrouching = false;
 	private Transform spawnPoint;
