@@ -8,22 +8,45 @@ public class PlayerController : MonoBehaviour {
 	private float yaw = 0.0f;
     private float pitch = 0.0f;
 	private CursorLockMode wantedMode;
-	
+
 	// Make these public once doing level design
 	private float speedH = 2.0f;
     private float speedV = 2.0f;
 	private float speed = 2f;
+	private float jumpSpeed = 3.5F;
+    private float gravity = 9.8F;
 
 	void Start () {
 		characterController = GetComponent<CharacterController>();
 	}
 	
 	void Update () {
-		if (wantedMode == CursorLockMode.Locked) {
+		RotatePlayer();
+		LockMouse();
+		MovePlayer();
+ 	}
+
+	 void RotatePlayer() {
+		 if (wantedMode == CursorLockMode.Locked) {
 			yaw += speedH * Input.GetAxis("Mouse X");
         	pitch -= speedV * Input.GetAxis("Mouse Y");
         	transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
 		}
+	 }
+
+	void MovePlayer() {
+		if (characterController.isGrounded) {
+            moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            moveDirection = transform.TransformDirection(moveDirection);
+            moveDirection *= speed;
+            if (Input.GetButton("Jump"))
+                moveDirection.y = jumpSpeed;    
+        }
+		moveDirection.y -= gravity * Time.deltaTime;
+        characterController.Move(moveDirection * Time.deltaTime);
+	}
+
+	void LockMouse() {
 		if (Input.GetMouseButtonDown(0)) {
 			wantedMode = CursorLockMode.Locked;
 			SetCursorState();
@@ -32,15 +55,10 @@ public class PlayerController : MonoBehaviour {
             Cursor.lockState = wantedMode = CursorLockMode.None;
 			SetCursorState();
 		}
- 	}
+	}
 
 	void SetCursorState() {
         Cursor.lockState = wantedMode;
         Cursor.visible = (CursorLockMode.Locked != wantedMode);
     }
-
-	void FixedUpdate () {
-		moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-		characterController.Move(moveDirection * Time.deltaTime * speed);
-	}
 }
