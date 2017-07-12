@@ -12,8 +12,6 @@ public class PlayerController : MonoBehaviour {
 	private bool isCrouching = false;
 	private Transform spawnPoint;
 	private bool onSqueakyFloorboard = false;
-
-	// Make these public once doing level design
 	public float speedH = 2.0f;
 	public float speedV = 2.0f;
 	public float speed = 2f;
@@ -53,7 +51,7 @@ public class PlayerController : MonoBehaviour {
 		if (cursorLockMode == CursorLockMode.Locked) {
 			yaw += speedH * Input.GetAxis("Mouse X");
 			pitch -= speedV * Input.GetAxis("Mouse Y");
-			transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+			transform.eulerAngles = new Vector3(Mathf.Clamp(pitch, -90, 90), yaw, 0.0f);
 		} 
   }
 
