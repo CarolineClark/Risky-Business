@@ -13,14 +13,14 @@ public class PlayerController : MonoBehaviour {
 	private bool onSqueakyFloorboard = false;
 
 	// Make these public once doing level design
-	private float speedH = 2.0f;
-	private float speedV = 2.0f;
-	private float speed = 2f;
-	private float crouchSpeedFactor = 0.5f;
-	private float jumpSpeed = 3.5F;
-	private float gravity = 9.8F;
-	private float quietSqueakVelocity = 1f;
-	private float loudSqueakVelocity = 1.5f;
+	public float speedH = 2.0f;
+	public float speedV = 2.0f;
+	public float speed = 2f;
+	public float crouchSpeedFactor = 0.5f;
+	public float jumpSpeed = 3.5F;
+	public float gravity = 9.8F;
+	public float quietSqueakVelocity = 1f;
+	public float loudSqueakVelocity = 1.5f;
 
 	void Start() {
 		spawnPoint = GameObject.FindGameObjectWithTag(Constants.PLAYER_SPAWN_POINT_TAG).transform;
