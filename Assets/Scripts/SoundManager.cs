@@ -9,7 +9,9 @@ public class SoundManager : MonoBehaviour {
 	public static SoundManager instance = null;     //Allows other scripts to call functions from SoundManager.             
 	public float lowPitchRange = .95f;              //The lowest a sound effect will be randomly pitched.
 	public float highPitchRange = 1.05f;            //The highest a sound effect will be randomly pitched.
-	
+
+	public AudioClip catYowlSound;
+
 	void Awake ()
 	{
 		//Check if there is already an instance of SoundManager
@@ -62,5 +64,6 @@ public class SoundManager : MonoBehaviour {
 
 	void PlayCatSound(Hashtable h) {
 		Debug.Log("Playing cat sound");
+		//SoundManager.instance.PlaySingle(catYowlSound);
 	}
 }

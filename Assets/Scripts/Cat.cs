@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Cat : MonoBehaviour {
 
+	public AudioClip yowlSound;
+
 	void Start () {
 		
 	}
@@ -14,6 +16,7 @@ public class Cat : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == Constants.PLAYER_TAG) {
+			SoundManager.instance.PlaySingle(yowlSound);
 			EventManager.TriggerEvent(Constants.CAT_EVENT);
 		}
 	}
