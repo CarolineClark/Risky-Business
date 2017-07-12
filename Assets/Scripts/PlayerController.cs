@@ -23,7 +23,15 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		spawnPoint = GameObject.FindGameObjectWithTag(Constants.PLAYER_SPAWN_POINT_TAG).transform;
 		characterController = GetComponent<CharacterController>();
-		EventManager.StartListening(Constants.RESTART_GAME_EVENT, ResetPlayerPosition);
+		EventManager.StartListening(Constants.RESTART_GAME_EVENT, SetPlayerPositionToSpawnPoint);
+		SetPlayerPositionToSpawnPoint();
+	}
+
+	public void SetPlayerPositionToSpawnPoint() {
+		transform.position = spawnPoint.position;
+	}
+
+	void SetPlayerPositionToSpawnPoint(Hashtable h) {
 		SetPlayerPositionToSpawnPoint();
 	}
 	
@@ -39,10 +47,6 @@ public class PlayerController : MonoBehaviour {
 			pitch -= speedV * Input.GetAxis("Mouse Y");
 			transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
 		}
-	}
-
-	void SetPlayerPositionToSpawnPoint() {
-		transform.position = spawnPoint.position;
 	}
 
 	void MovePlayer() {
@@ -61,8 +65,6 @@ public class PlayerController : MonoBehaviour {
 				moveDirection *= crouchSpeedFactor;
 			}
 		}
-		
-		
 		moveDirection.y -= gravity * Time.deltaTime;
 		characterController.Move(moveDirection * Time.deltaTime);
 	}
@@ -93,9 +95,5 @@ public class PlayerController : MonoBehaviour {
 	void SetCursorState() {
 		Cursor.lockState = cursorLockMode;
 		Cursor.visible = (CursorLockMode.Locked != cursorLockMode);
-	}
-
-	void ResetPlayerPosition(Hashtable h) {
-		Debug.Log("TODO - Reset player position");
 	}
 }
