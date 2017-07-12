@@ -8,9 +8,9 @@ public class PlayerController : MonoBehaviour {
 	private float yaw = 0.0f;
 	private float pitch = 0.0f;
 	private CursorLockMode cursorLockMode;
-	private Transform transform;
 	private KeyCode crouchKey = KeyCode.Tab;
 	private bool isCrouching = false;
+	private Transform spawnPoint;
 
 	// Make these public once doing level design
 	private float speedH = 2.0f;
@@ -21,8 +21,18 @@ public class PlayerController : MonoBehaviour {
 	private float gravity = 9.8F;
 
 	void Start () {
+		spawnPoint = GameObject.FindGameObjectWithTag(Constants.PLAYER_SPAWN_POINT_TAG).transform;
 		characterController = GetComponent<CharacterController>();
-		transform = GetComponent<Transform>();
+		EventManager.StartListening(Constants.RESTART_GAME_EVENT, SetPlayerPositionToSpawnPoint);
+		SetPlayerPositionToSpawnPoint();
+	}
+
+	public void SetPlayerPositionToSpawnPoint() {
+		transform.position = spawnPoint.position;
+	}
+
+	void SetPlayerPositionToSpawnPoint(Hashtable h) {
+		SetPlayerPositionToSpawnPoint();
 	}
 	
 	void Update () {
@@ -55,8 +65,6 @@ public class PlayerController : MonoBehaviour {
 				moveDirection *= crouchSpeedFactor;
 			}
 		}
-		
-		
 		moveDirection.y -= gravity * Time.deltaTime;
 		characterController.Move(moveDirection * Time.deltaTime);
 	}
