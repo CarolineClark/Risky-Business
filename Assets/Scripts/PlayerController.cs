@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour {
 	private float yaw = 0.0f;
 	private float pitch = 0.0f;
 	private CursorLockMode cursorLockMode;
+	private Transform transform;
 
 	// Make these public once doing level design
 	private float speedH = 2.0f;
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Start () {
 		characterController = GetComponent<CharacterController>();
+		transform = GetComponent<Transform>();
 	}
 	
 	void Update () {
@@ -49,7 +51,7 @@ public class PlayerController : MonoBehaviour {
 
 	void DuckPlayer() {
 		if (Input.GetKeyDown(KeyCode.DownArrow)) {
-			// TODO
+			transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 0.5f, transform.localScale.z);
 		}
 	}
 
