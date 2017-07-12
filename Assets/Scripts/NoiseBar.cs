@@ -7,6 +7,7 @@ public class NoiseBar : MonoBehaviour {
 	private float catSoundIncrease = 0.3f;
 	private float descreaseSpeed = 0.2f;
 	Image image;
+	private Image containerImage;
 
 	void Start () {
 		EventManager.StartListening(Constants.CAT_EVENT, IncreaseSoundLevel);
@@ -15,6 +16,9 @@ public class NoiseBar : MonoBehaviour {
 		image.fillMethod = Image.FillMethod.Vertical;
 		image.fillOrigin = (int)Image.OriginVertical.Bottom;
 		image.fillAmount = 0;
+		image.canvasRenderer.SetAlpha(0.5f);
+		containerImage = GameObject.FindGameObjectWithTag(Constants.EMPTY_NOISE_CONTAINER_TAG).GetComponent<Image>();
+		containerImage.canvasRenderer.SetAlpha(0.3f);
 	}
 	
 	void Update () {

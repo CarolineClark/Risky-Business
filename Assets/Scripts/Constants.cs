@@ -6,4 +6,5 @@ public class Constants {
     public static readonly string START_SCREEN_TAG = "StartScreen";
     public static readonly string RESTART_GAME_EVENT = "RestartGameEvent";
     public static readonly string PLAYER_SPAWN_POINT_TAG = "PlayerSpawnPoint";
+    public static readonly string EMPTY_NOISE_CONTAINER_TAG = "EmptyNoiseContainer";
 }
