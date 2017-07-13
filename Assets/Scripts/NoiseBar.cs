@@ -28,7 +28,7 @@ public class NoiseBar : MonoBehaviour {
 	void IncreaseSoundLevel(Hashtable h) {
 		image.fillAmount += catSoundIncrease;
 		if (image.fillAmount == 1) {
-			EventManager.TriggerEvent(Constants.RESTART_GAME_EVENT);
+			EventManager.TriggerEvent(Constants.LOSE_GAME_EVENT);
 		}
 	}
 }

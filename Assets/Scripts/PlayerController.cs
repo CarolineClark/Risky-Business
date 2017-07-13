@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour {
 	void Start() {
 		spawnPoint = GameObject.FindGameObjectWithTag(Constants.PLAYER_SPAWN_POINT_TAG).transform;
 		characterController = GetComponent<CharacterController>();
-		EventManager.StartListening(Constants.RESTART_GAME_EVENT, SetPlayerPositionToSpawnPoint);
+		EventManager.StartListening(Constants.LOSE_GAME_EVENT, SetPlayerPositionToSpawnPoint);
 		SetPlayerPositionToSpawnPoint();
 	}
 
