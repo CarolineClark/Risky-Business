@@ -12,6 +12,7 @@ public class Constants {
     public static readonly string LOSE_SCREEN_TAG = "LoseScreen";
     public static readonly string LOSE_GAME_EVENT = "LoseGameEvent";
     public static readonly string WIN_GAME_EVENT = "WinGameEvent";
+    public static readonly string WIND_CHIME_TRIGGER_EVENT = "WindChimeTriggerEvent";
 
     public static readonly string PLAYER_SPAWN_POINT_TAG = "PlayerSpawnPoint";
     public static readonly string EMPTY_NOISE_CONTAINER_TAG = "EmptyNoiseContainer";
