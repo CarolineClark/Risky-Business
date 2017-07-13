@@ -37,5 +37,5 @@ sysinfo.txt
 
 
 # Because we are working with xbox controllers on windows and mac.
-ProjectSettings/InputManager.asset
+# ProjectSettings/InputManager.asset
 
