@@ -29,8 +29,11 @@ public class SoundManager : MonoBehaviour {
 	
 	
 	//Used to play single sound clips.
-	public void PlaySingle(AudioClip clip)
+	public void PlaySingle(AudioClip clip, bool overridePrevious=false)
 	{
+		if (efxSource.isPlaying && !overridePrevious) {
+			return;
+		}
 		//Set the clip of our efxSource audio source to the clip passed in as a parameter.
 		efxSource.clip = clip;
 		
@@ -38,9 +41,9 @@ public class SoundManager : MonoBehaviour {
 		efxSource.Play ();
 	}
 
-	public void PlayMusic(AudioClip clip) {
+	public void PlayMusic(AudioClip clip, bool loop=true) {
 		musicSource.clip = clip;
-		musicSource.loop = true;
+		musicSource.loop = loop;
 		musicSource.Play();
 	}
 

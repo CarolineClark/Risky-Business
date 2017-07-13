@@ -4,14 +4,10 @@ using UnityEngine;
 
 public class Cat : MonoBehaviour {
 
-	public AudioClip yowlSound;
+	private AudioClip yowlSound;
 
 	void Start () {
-		
-	}
-	
-	void Update () {
-		
+		yowlSound = Resources.Load<AudioClip>("SFX/angrycat");
 	}
 
 	void OnTriggerEnter(Collider other) {

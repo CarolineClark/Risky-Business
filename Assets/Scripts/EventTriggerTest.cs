@@ -7,6 +7,7 @@ public class EventTriggerTest : MonoBehaviour {
     void Update () {
         if (Input.GetKeyDown ("w"))
         {
+            Debug.Log("trigger win event");
             EventManager.TriggerEvent(Constants.WIN_GAME_EVENT);
         }
 

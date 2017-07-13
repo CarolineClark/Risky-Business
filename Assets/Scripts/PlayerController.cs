@@ -3,14 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
-	private CharacterController characterController;
-	private Vector3 moveDirection = Vector3.zero;
-	private float yaw = 0.0f;
-	private float pitch = 0.0f;
-	private CursorLockMode cursorLockMode = CursorLockMode.Locked;
-	private bool isCrouching = false;
-	private Transform spawnPoint;
-	private bool onSqueakyFloorboard = false;
+
 	public float speedH = 2.0f;
 	public float speedV = 2.0f;
 	public float speed = 2f;
@@ -20,10 +13,24 @@ public class PlayerController : MonoBehaviour {
 	public float quietSqueakVelocity = 1f;
 	public float loudSqueakVelocity = 1.5f;
 
+	private CharacterController characterController;
+	private Vector3 moveDirection = Vector3.zero;
+	private float yaw = 0.0f;
+	private float pitch = 0.0f;
+	private CursorLockMode cursorLockMode = CursorLockMode.Locked;
+	private bool isCrouching = false;
+	private Transform spawnPoint;
+	private bool onSqueakyFloorboard = false;
+	private AudioClip quietSqueak;
+	private AudioClip loudSqueak;
+	private bool frozen = true;
+
 	void Start() {
 		spawnPoint = GameObject.FindGameObjectWithTag(Constants.PLAYER_SPAWN_POINT_TAG).transform;
 		characterController = GetComponent<CharacterController>();
-		EventManager.StartListening(Constants.LOSE_GAME_EVENT, SetPlayerPositionToSpawnPoint);
+		quietSqueak = Resources.Load<AudioClip>("Sounds/draft-floorboards-creaking-sound");
+		loudSqueak = Resources.Load<AudioClip>("Sounds/draft-loud-floorboard-squeak");
+		// EventManager.StartListening(Constants.LOSE_GAME_EVENT, SetPlayerPositionToSpawnPoint);
 		SetPlayerPositionToSpawnPoint();
 	}
 
@@ -31,19 +38,21 @@ public class PlayerController : MonoBehaviour {
 		transform.position = spawnPoint.position;
 	}
 
-	void SetPlayerPositionToSpawnPoint(Hashtable h) {
-		SetPlayerPositionToSpawnPoint();
-	}
-
 	public void SetIsOnSqueakyFloorboard(bool onSqueaky) {
 		onSqueakyFloorboard = onSqueaky;
 	}
 
+	public void SetPlayerFrozen(bool isFrozen) {
+		frozen = isFrozen;
+	}
+
 	void Update() {
-		RotatePlayer();
-		MovePlayer();
-		LockMouse();
-		CheckForSqueaks();
+		if (!frozen) {
+			RotatePlayer();
+			MovePlayer();
+			LockMouse();
+			CheckForSqueaks();
+		}
 	}
 
 	void RotatePlayer() {
@@ -110,11 +119,25 @@ public class PlayerController : MonoBehaviour {
 	void CheckForSqueaks() {
 		if (onSqueakyFloorboard) {
 			if (characterController.velocity.magnitude > loudSqueakVelocity) {
-				Debug.Log("loud squeak");
+				SoundManager.instance.PlaySingle(loudSqueak);
+				EventManager.TriggerEvent(Constants.SQUEAKY_FLOORBOARD_LOUD_EVENT);
 			}
 			else if (characterController.velocity.magnitude > quietSqueakVelocity) {
-				Debug.Log("quiet squeak");
+				SoundManager.instance.PlaySingle(quietSqueak);
+				EventManager.TriggerEvent(Constants.SQUEAKY_FLOORBOARD_QUIET_EVENT);
 			}
+		}
+	}
+
+	void OnTriggerEnter(Collider other) {
+		if (other.tag == Constants.SQUEAKY_FLOORBOARD_TAG) {
+			SetIsOnSqueakyFloorboard(true);
+		}
+	}
+
+	void OnTriggerExit(Collider other) {
+		if (other.tag == Constants.SQUEAKY_FLOORBOARD_TAG) {
+			SetIsOnSqueakyFloorboard(false);
 		}
 	}
 }
