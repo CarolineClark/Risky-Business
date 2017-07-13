@@ -7,6 +7,8 @@ public class NoiseBar : MonoBehaviour {
 	private float catSoundIncrease = 0.2f;
 	private float quietSqueakyFloorboardSoundIncrease = 0.2f;
 	private float loudSqueakyFloorboardSoundIncrease = 0.3f;
+	private float squeakyToyIncrease = 0.4f;
+	private float windChimeIncrease = 0.3f;
 	private float breakPotIncrease = 0.5f;
 	private float descreaseSpeed = 0.1f;
 	Image image;
@@ -17,6 +19,8 @@ public class NoiseBar : MonoBehaviour {
 		EventManager.StartListening(Constants.SQUEAKY_FLOORBOARD_LOUD_EVENT, LoudSqueakyFloorboardIncreaseSoundLevel);
 		EventManager.StartListening(Constants.SQUEAKY_FLOORBOARD_QUIET_EVENT, QuietSqueakyFloorboardIncreaseSoundLevel);
 		EventManager.StartListening(Constants.BREAK_POT_EVENT, BreakPotIncreaseSoundLevel);
+		EventManager.StartListening(Constants.SQUEAKY_TOY_EVENT, SqueakyToyIncreaseSoundLevel);
+		EventManager.StartListening(Constants.WIND_CHIME_TRIGGER_EVENT, WindChimeIncreaseSoundLevel);
 		EventManager.StartListening(Constants.LOSE_GAME_EVENT, ResetBar);
 		image = GetComponent<Image>();
 		image.type = Image.Type.Filled;
@@ -49,6 +53,16 @@ public class NoiseBar : MonoBehaviour {
 
 	void BreakPotIncreaseSoundLevel(Hashtable h) {
 		image.fillAmount += breakPotIncrease;
+		CheckIfLost();
+	}
+
+	void WindChimeIncreaseSoundLevel(Hashtable h) {
+		image.fillAmount += windChimeIncrease;
+		CheckIfLost();
+	}
+
+	void SqueakyToyIncreaseSoundLevel(Hashtable h) {
+		image.fillAmount += squeakyToyIncrease;
 		CheckIfLost();
 	}
 
