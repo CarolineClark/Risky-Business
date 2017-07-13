@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour {
 	public float jumpSpeed = 3.5F;
 	public float gravity = 9.8F;
 	public float quietSqueakVelocity = 1f;
-	public float loudSqueakVelocity = 1.5f;
+	public float minTimeBetweenCreakSoundsSeconds = 1f;
 
 	private CharacterController characterController;
 	private Vector3 moveDirection = Vector3.zero;
@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour {
 
 	public void SetPlayerPositionToSpawnPoint() {
 		transform.position = spawnPoint.position;
+		yaw = -90f;
 	}
 
 	public void SetIsOnSqueakyFloorboard(bool onSqueaky) {
@@ -147,7 +148,7 @@ public class PlayerController : MonoBehaviour {
 			playingSoundFlag = true;
 			SoundManager.instance.RandomizeSfx(squeakClips);
 			EventManager.TriggerEvent(Constants.SQUEAKY_FLOORBOARD_QUIET_EVENT);
-			yield return new WaitForSeconds (1f);
+			yield return new WaitForSeconds (minTimeBetweenCreakSoundsSeconds);
 			playingSoundFlag = false;
 		}
 	}

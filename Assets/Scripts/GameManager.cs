@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour {
 		AudioClip audioClip = Resources.Load<AudioClip>("Sounds/Win sound");
 		SoundManager.instance.PlaySingle(audioClip, true);
 		winScreen.SetActive(true);
+		EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(winScreen.GetComponentInChildren<Button>().gameObject);
 	}
 
 	IEnumerator Wait() {
