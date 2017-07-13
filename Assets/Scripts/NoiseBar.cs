@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class NoiseBar : MonoBehaviour {
-	private float catSoundIncrease = 0.3f;
-	private float quietSqueakyFloorboardSoundIncrease = 0.3f;
-	private float loudSqueakyFloorboardSoundIncrease = 0.6f;
-	private float descreaseSpeed = 0.2f;
+	private float catSoundIncrease = 0.2f;
+	private float quietSqueakyFloorboardSoundIncrease = 0.2f;
+	private float loudSqueakyFloorboardSoundIncrease = 0.3f;
+	private float breakPotIncrease = 0.5f;
+	private float descreaseSpeed = 0.1f;
 	Image image;
 	private Image containerImage;
 
@@ -15,6 +16,8 @@ public class NoiseBar : MonoBehaviour {
 		EventManager.StartListening(Constants.CAT_EVENT, CatIncreaseSoundLevel);
 		EventManager.StartListening(Constants.SQUEAKY_FLOORBOARD_LOUD_EVENT, LoudSqueakyFloorboardIncreaseSoundLevel);
 		EventManager.StartListening(Constants.SQUEAKY_FLOORBOARD_QUIET_EVENT, QuietSqueakyFloorboardIncreaseSoundLevel);
+		EventManager.StartListening(Constants.BREAK_POT_EVENT, BreakPotIncreaseSoundLevel);
+		EventManager.StartListening(Constants.LOSE_GAME_EVENT, ResetBar);
 		image = GetComponent<Image>();
 		image.type = Image.Type.Filled;
 		image.fillMethod = Image.FillMethod.Vertical;
@@ -44,9 +47,18 @@ public class NoiseBar : MonoBehaviour {
 		CheckIfLost();
 	}
 
+	void BreakPotIncreaseSoundLevel(Hashtable h) {
+		image.fillAmount += breakPotIncrease;
+		CheckIfLost();
+	}
+
 	void CheckIfLost() {
 		if (image.fillAmount == 1) {
 			EventManager.TriggerEvent(Constants.LOSE_GAME_EVENT);
 		}
+	}
+
+	void ResetBar(Hashtable h) {
+		image.fillAmount = 0;
 	}
 }

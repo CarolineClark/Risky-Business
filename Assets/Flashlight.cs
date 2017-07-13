@@ -7,6 +7,7 @@ public class Flashlight : MonoBehaviour {
 	GameObject flashlightGameObject;
 	Light flashlight;
 	bool lightIsActive = false;
+	AudioClip mumSound;
 
 	void Start () {
 		flashlightGameObject = transform.Find("Flashlight").gameObject;

@@ -24,13 +24,19 @@ public class PlayerController : MonoBehaviour {
 	private AudioClip quietSqueak;
 	private AudioClip loudSqueak;
 	private bool frozen = true;
+	private AudioClip[] squeakClips;
+	private bool playingSoundFlag = false;
 
 	void Start() {
 		spawnPoint = GameObject.FindGameObjectWithTag(Constants.PLAYER_SPAWN_POINT_TAG).transform;
 		characterController = GetComponent<CharacterController>();
-		quietSqueak = Resources.Load<AudioClip>("Sounds/draft-floorboards-creaking-sound");
-		loudSqueak = Resources.Load<AudioClip>("Sounds/draft-loud-floorboard-squeak");
-		// EventManager.StartListening(Constants.LOSE_GAME_EVENT, SetPlayerPositionToSpawnPoint);
+		// quietSqueak = Resources.Load<AudioClip>("Sounds/draft-floorboards-creaking-sound");
+		// loudSqueak = Resources.Load<AudioClip>("Sounds/draft-loud-floorboard-squeak");
+		AudioClip clip1 = Resources.Load<AudioClip>("FinalSounds/Floor creak");
+		AudioClip clip2 = Resources.Load<AudioClip>("FinalSounds/Floor creak 2");
+		AudioClip clip3 = Resources.Load<AudioClip>("FinalSounds/Floor creak 3");
+		AudioClip clip4 = Resources.Load<AudioClip>("FinalSounds/Floor creak 4");
+		squeakClips = new AudioClip[] {clip1, clip2, clip3, clip4};
 		SetPlayerPositionToSpawnPoint();
 	}
 
@@ -118,13 +124,8 @@ public class PlayerController : MonoBehaviour {
 
 	void CheckForSqueaks() {
 		if (onSqueakyFloorboard) {
-			if (characterController.velocity.magnitude > loudSqueakVelocity) {
-				SoundManager.instance.PlaySingle(loudSqueak);
-				EventManager.TriggerEvent(Constants.SQUEAKY_FLOORBOARD_LOUD_EVENT);
-			}
-			else if (characterController.velocity.magnitude > quietSqueakVelocity) {
-				SoundManager.instance.PlaySingle(quietSqueak);
-				EventManager.TriggerEvent(Constants.SQUEAKY_FLOORBOARD_QUIET_EVENT);
+			if (characterController.velocity.magnitude > quietSqueakVelocity) {
+				StartCoroutine(PlaySoundTriggerEventAndWait());
 			}
 		}
 	}
@@ -138,6 +139,16 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerExit(Collider other) {
 		if (other.tag == Constants.SQUEAKY_FLOORBOARD_TAG) {
 			SetIsOnSqueakyFloorboard(false);
+		}
+	}
+
+	IEnumerator PlaySoundTriggerEventAndWait() {
+		if (!playingSoundFlag) {
+			playingSoundFlag = true;
+			SoundManager.instance.RandomizeSfx(squeakClips);
+			EventManager.TriggerEvent(Constants.SQUEAKY_FLOORBOARD_QUIET_EVENT);
+			yield return new WaitForSeconds (1f);
+			playingSoundFlag = false;
 		}
 	}
 }

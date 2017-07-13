@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour {
 		winScreen.SetActive(false);
 		Camera.main.GetComponent<Flashlight>().TurnOffFlashlight();
 		playerController.SetPlayerFrozen(false);
+		playerController.SetPlayerPositionToSpawnPoint();
 		AudioClip audioClip = Resources.Load<AudioClip>("Sounds/Dragon feeder edit_1");
 		SoundManager.instance.PlayMusic(audioClip);
 	}
