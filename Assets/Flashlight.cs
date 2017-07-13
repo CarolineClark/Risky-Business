@@ -7,12 +7,15 @@ public class Flashlight : MonoBehaviour {
 	GameObject flashlightGameObject;
 	Light flashlight;
 	bool lightIsActive = false;
-	AudioClip mumSound;
+	AudioClip[] mumClips;
 
 	void Start () {
 		flashlightGameObject = transform.Find("Flashlight").gameObject;
 		flashlight = flashlightGameObject.GetComponent<Light>();
 		flashlightGameObject.SetActive(false);
+		AudioClip mumSound1 = Resources.Load<AudioClip>("FinalSounds/Mum caught");
+		AudioClip mumSound2 = Resources.Load<AudioClip>("FinalSounds/Mum caught 2");
+		mumClips = new AudioClip[] {mumSound1, mumSound2};
 	}
 
 	void Update() {
@@ -26,6 +29,10 @@ public class Flashlight : MonoBehaviour {
 	public void TurnOnFlashlight() {
 		flashlightGameObject.SetActive(true);
 		lightIsActive = true;
+	}
+
+	public void PlayMumClips() {
+		SoundManager.instance.RandomizeSfx(mumClips);
 	}
 
 	public void TurnOffFlashlight() {

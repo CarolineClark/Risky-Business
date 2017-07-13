@@ -49,8 +49,6 @@ public class GameManager : MonoBehaviour {
 
 	void ShowLoseScreen(Hashtable h) {
 		playerController.SetPlayerFrozen(true);
-		Camera.main.GetComponent<Flashlight>().TurnOnFlashlight();
-		SoundManager.instance.StopPlayingMusic();
 		StartCoroutine(Wait());
 	}
 
@@ -63,11 +61,14 @@ public class GameManager : MonoBehaviour {
 	}
 
 	IEnumerator Wait() {
+		Camera.main.GetComponent<Flashlight>().TurnOnFlashlight();
+		SoundManager.instance.StopPlayingMusic();
 		yield return new WaitForSeconds (1.5f);
+		Camera.main.GetComponent<Flashlight>().PlayMumClips();
+		yield return new WaitForSeconds (1.7f);
 		AudioClip audioClip = Resources.Load<AudioClip>("Sounds/Lose sound");
 		SoundManager.instance.PlaySingle(audioClip, true);
 		loseScreen.SetActive(true);
-		Debug.Log("Losescreen button = " + loseScreen.GetComponentInChildren<Button>().gameObject);
 		EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(loseScreen.GetComponentInChildren<Button>().gameObject);
 	}
 }
